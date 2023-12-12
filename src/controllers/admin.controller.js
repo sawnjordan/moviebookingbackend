@@ -68,6 +68,14 @@ class AdminContorller {
       next(err);
     }
   };
+
+  logoutAdmin = async (req, res, next) => {
+    res.clearCookie("adminAuthToken");
+    res.json({
+      ok: true,
+      message: "Admin logged out successfully.",
+    });
+  };
 }
 const adminControllerObj = new AdminContorller();
 module.exports = adminControllerObj;
