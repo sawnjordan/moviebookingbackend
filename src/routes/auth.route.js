@@ -1,4 +1,6 @@
 const express = require("express");
+const authControllerObj = require("../controllers/auth.controller");
+const checkAuthToken = require("../middlewares/checkAuthToken");
 const router = express.Router();
 
 router.get("/test", async (req, res) => {
@@ -7,18 +9,11 @@ router.get("/test", async (req, res) => {
   });
 });
 
-const responseFormat = (ok, message, data) => {
-  return {
-    ok,
-    message,
-    data,
-  };
-};
+router.post("/register", authControllerObj.registerUser);
 
-router.post("/register", async (req, res, next) => {});
+router.post("/login", authControllerObj.loginUser);
 
-router.post("/login", async (req, res, next) => {});
+router.get("/logout", checkAuthToken, authControllerObj.logoutUser);
 
-router.get("/logout", async (req, res) => {});
-
+router.get("/me", checkAuthToken);
 module.exports = router;
