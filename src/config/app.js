@@ -2,6 +2,7 @@ const express = require("express");
 const cookieParser = require("cookie-parser");
 const mongodbInit = require("./mongo.config");
 const cors = require("cors");
+const routes = require("../routes");
 
 const app = express();
 mongodbInit();
@@ -28,6 +29,7 @@ app.use(express.urlencoded({ extended: false }));
 
 //to use cookie
 app.use(cookieParser());
+app.use("/api/v1", routes);
 
 //express global error handling middleware
 app.use((err, req, res, next) => {
