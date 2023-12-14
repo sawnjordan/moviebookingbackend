@@ -32,6 +32,11 @@ const movieSchema = new mongoose.Schema({
       celebImage: String,
     },
   ],
+  status: {
+    type: String,
+    default: "nowshowing",
+    enum: ["nowshowing", "upcomming"],
+  },
 });
 
 const MovieModel = mongoose.model("Movie", movieSchema);
