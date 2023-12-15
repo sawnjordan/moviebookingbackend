@@ -54,12 +54,16 @@ router.get(
 // everyone can access
 router.get(
   "/screensbymovieschedule/:city/:date/:movieid",
-  movieControllerObj.getSingleMovie
+  movieControllerObj.getMovieByCityDate
 );
 
 router.get(
   "/schedulebymovie/:screenid/:date/:movieid",
   movieControllerObj.getScheduleByMovie
+);
+router.get(
+  "/schedulebymovie/:screenid/:date/:movieid",
+  movieControllerObj.getScheduleByMovieAndDate
 );
 
 module.exports = router;

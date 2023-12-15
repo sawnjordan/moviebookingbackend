@@ -36,6 +36,10 @@ const movieSchema = new mongoose.Schema({
       celebImage: String,
     },
   ],
+  director: {
+    type: String,
+    required: true,
+  },
   status: {
     type: String,
     default: "upcomming",

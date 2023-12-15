@@ -156,7 +156,7 @@ class MovieController {
         });
       }
       // console.log("before newBooking done");
-      const newBooking = new Booking({
+      const newBooking = new BookingModel({
         userId: req.userId,
         showTime,
         showDate,
@@ -387,6 +387,104 @@ class MovieController {
     } catch (err) {
       next(err);
     }
+  };
+
+  getMovieByCityDate = async (req, res, next) => {
+    try {
+      const city = req.params.city.toLowerCase();
+      const date = req.params.date;
+      const movieId = req.params.movieid;
+      // console.log(city, date, movieId);
+      const screens = await ScreenModel.find({ city });
+      // console.log(screens);
+      if (!screens || screens.length === 0) {
+        return res
+          .status(404)
+          .json(
+            responseFormat(
+              false,
+              "No screens found in the specified city",
+              null
+            )
+          );
+      }
+
+      let temp = [];
+
+      screens.forEach((screen) => {
+        screen.movieSchedules.forEach((schedule) => {
+          // console.log(schedule, "here");
+          let showDate = new Date(schedule?.showDate);
+          let bodyDate = new Date(date);
+          // console.log(showDate , bodyDate);
+          if (
+            showDate.getDay() === bodyDate.getDay() &&
+            showDate.getMonth() === bodyDate.getMonth() &&
+            showDate.getFullYear() === bodyDate.getFullYear() &&
+            schedule?.movieId == movieId
+          ) {
+            temp.push(screen);
+          }
+        });
+      });
+
+      console.log(temp);
+
+      if (temp.length === 0) {
+        return res
+          .status(404)
+          .json(responseFormat(false, "Screen not found", null));
+      }
+
+      res
+        .status(200)
+        .json(responseFormat(true, "Screens retrieved successfully", temp));
+    } catch (error) {
+      console.log(error);
+      next(error);
+    }
+  };
+
+  getScheduleByMovieAndDate = async (req, res, next) => {
+    const screenId = req.params.screenid;
+    const date = req.params.date;
+    const movieId = req.params.movieid;
+
+    const screen = await ScreenModel.findById(screenId);
+
+    if (!screen) {
+      return res
+        .status(404)
+        .json(responseFormat(false, "Screen not found", null));
+    }
+
+    const movieSchedules = screen.movieSchedules.filter((schedule) => {
+      let showDate = new Date(schedule.showDate);
+      let bodyDate = new Date(date);
+      if (
+        showDate.getDay() === bodyDate.getDay() &&
+        showDate.getMonth() === bodyDate.getMonth() &&
+        showDate.getFullYear() === bodyDate.getFullYear() &&
+        schedule.movieId == movieId
+      ) {
+        return true;
+      }
+      return false;
+    });
+    // console.log(movieSchedules);
+
+    if (!movieSchedules) {
+      return res
+        .status(404)
+        .json(responseFormat(false, "Movie schedule not found", null));
+    }
+
+    res.status(200).json(
+      responseFormat(true, "Movie schedule retrieved successfully", {
+        screen,
+        movieSchedulesforDate: movieSchedules,
+      })
+    );
   };
 }
 
