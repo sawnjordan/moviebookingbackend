@@ -342,7 +342,14 @@ class MovieController {
 
   getUserBookings = async (req, res, next) => {
     try {
-      const user = await UserModel.findById(req.userId).populate("bookings");
+      const user = await UserModel.findById(req.userId).populate({
+        path: "bookings",
+        model: "Booking",
+        populate: {
+          path: "movieId",
+          model: "Movie",
+        },
+      });
       if (!user) {
         return res
           .status(404)
@@ -352,7 +359,9 @@ class MovieController {
       let bookings = [];
 
       for (let i = 0; i < user.bookings.length; i++) {
-        let bookingobj = await BookingModel.findById(user.bookings[i]._id);
+        let bookingobj = await BookingModel.findById(user.bookings[i]._id)
+          .populate("movieId")
+          .populate("screenId");
         bookings.push(bookingobj);
       }
 
