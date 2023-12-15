@@ -3,7 +3,7 @@ const jwt = require("jsonwebtoken");
 const checkAuthToken = (req, res, next) => {
   const { authToken } = req.cookies;
   const { refreshToken } = req.cookies;
-  //   console.log(authToken, refreshToken);
+  console.log(authToken, refreshToken);
 
   if (!authToken || !refreshToken) {
     return res.status(401).json({

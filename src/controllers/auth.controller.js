@@ -52,12 +52,12 @@ class AuthContorller {
     const authToken = jwt.sign(
       { userId: user._id },
       process.env.JWT_SECRET_KEY,
-      { expiresIn: "10m" }
+      { expiresIn: "100m" }
     );
     const refreshToken = jwt.sign(
       { userId: user._id },
       process.env.JWT_REFRESH_SECRET_KEY,
-      { expiresIn: "30m" }
+      { expiresIn: "300m" }
     );
     res.cookie("authToken", authToken, {
       httpOnly: true,
@@ -94,6 +94,21 @@ class AuthContorller {
       return res.status(400).json(responseFormat(false, "Invalid credentials"));
     } else {
       return res.status(200).json(responseFormat(true, "User found.", user));
+    }
+  };
+
+  changeAuthAddress = async (req, res, next) => {
+    const { address } = req.body;
+    const user = await UserModel.findOne({ _id: req.userId });
+
+    if (!user) {
+      return res.status(400).json(createResponse(false, "Invalid credentials"));
+    } else {
+      user.address = address;
+      await user.save();
+      return res
+        .status(200)
+        .json(createResponse(true, "Address changed successfully"));
     }
   };
 }

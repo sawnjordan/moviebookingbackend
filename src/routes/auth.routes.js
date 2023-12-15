@@ -15,5 +15,12 @@ router.post("/login", authControllerObj.loginUser);
 
 router.get("/logout", checkAuthToken, authControllerObj.logoutUser);
 
-router.get("/me", checkAuthToken);
+router.get("/me", checkAuthToken, authControllerObj.getMyProfile);
+
+// change user address
+router.post(
+  "/changeAddress",
+  checkAuthToken,
+  authControllerObj.changeAuthAddress
+);
 module.exports = router;
