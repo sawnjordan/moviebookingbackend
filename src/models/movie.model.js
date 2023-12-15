@@ -34,8 +34,8 @@ const movieSchema = new mongoose.Schema({
   ],
   status: {
     type: String,
-    default: "nowshowing",
-    enum: ["nowshowing", "upcomming"],
+    default: "upcomming",
+    enum: ["nowshowing", "upcomming", "expired"],
   },
 });
 

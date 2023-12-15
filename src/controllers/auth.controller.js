@@ -10,7 +10,7 @@ class AuthContorller {
       const existingUser = await UserModel.findOne({ email: email });
       if (existingUser) {
         return res
-          .status(409)
+          .status(400)
           .json(responseFormat(false, "Email already exists."));
       }
 
@@ -21,10 +21,10 @@ class AuthContorller {
         address,
       });
 
-      await newUser.save();
+      let response = await newUser.save();
       res
         .status(201)
-        .json(responseFormat(true, "User registered successfully."));
+        .json(responseFormat(true, "User registered successfully.", response));
     } catch (err) {
       next(err);
     }
