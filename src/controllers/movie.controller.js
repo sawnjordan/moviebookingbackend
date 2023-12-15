@@ -1,3 +1,10 @@
+const BookingModel = require("../models/booking.model");
+const MovieModel = require("../models/movie.model");
+const ScreenModel = require("../models/screen.model");
+const UserModel = require("../models/user.model");
+
+const { responseFormat } = require("../utilities/helpers");
+
 class MovieController {
   adminCreateMovie = async (req, res, next) => {
     try {
@@ -9,20 +16,24 @@ class MovieController {
         rating,
         genre,
         duration,
+        director,
       } = req.body;
 
       const newMovie = new MovieModel({
         title,
         description,
-        imgUrl,
+        portraitImgUrl,
+        landscapeImgUrl,
         rating,
         genre,
         duration,
+        director,
       });
-      await newMovie.save();
+      const response = await newMovie.save();
       res.status(201).json({
         ok: true,
         message: "Movie added successfully.",
+        data: response,
       });
     } catch (err) {
       next(err);
@@ -31,10 +42,10 @@ class MovieController {
 
   adminCreateScreen = async (req, res, next) => {
     try {
-      const { name, location, seats, city, screenType } = req.body;
+      const { name, hallName, seats, city, screenType } = req.body;
       const newScreen = new ScreenModel({
         name,
-        location,
+        hallName,
         seats,
         city: city.toLowerCase(),
         screenType,

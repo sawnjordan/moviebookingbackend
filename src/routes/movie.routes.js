@@ -1,12 +1,6 @@
 const express = require("express");
 const router = express.Router();
 
-const UserModel = require("../models/user.model");
-const MovieModel = require("../models/movie.model");
-const BookingModel = require("../models/booking.model");
-const ScreenModel = require("../models/screen.model");
-
-const { responseFormat } = require("../utilities/helpers");
 const checkAuthToken = require("../middlewares/checkAuthToken");
 const movieControllerObj = require("../controllers/movie.controller");
 const checkAdminToken = require("../middlewares/checkAdminToken");
