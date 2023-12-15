@@ -9,4 +9,6 @@ router.post("/login", adminControllerObj.loginAdmin);
 
 router.get("/logout", checkAdminToken, adminControllerObj.logoutAdmin);
 
+router.get("/me", checkAdminToken, adminControllerObj.getMyProfile);
+
 module.exports = router;

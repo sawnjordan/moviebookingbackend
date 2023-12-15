@@ -17,6 +17,8 @@ const upload = multer({ storage });
 
 router.post("/uploadimage", upload.single("myimage"), async (req, res) => {
   const file = req.file;
+  console.log(file, "file in back");
+  // console.log("this is req", req);
   if (!file) {
     return res
       .status(400)

@@ -102,13 +102,13 @@ class AuthContorller {
     const user = await UserModel.findOne({ _id: req.userId });
 
     if (!user) {
-      return res.status(400).json(createResponse(false, "Invalid credentials"));
+      return res.status(400).json(responseFormat(false, "Invalid credentials"));
     } else {
       user.address = address;
       await user.save();
       return res
         .status(200)
-        .json(createResponse(true, "Address changed successfully"));
+        .json(responseFormat(true, "Address changed successfully"));
     }
   };
 }

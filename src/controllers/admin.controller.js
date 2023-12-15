@@ -55,7 +55,7 @@ class AdminContorller {
       const adminAuthToken = jwt.sign(
         { adminId: admin._id },
         process.env.JWT_ADMIN_SECRET_KEY,
-        { expiresIn: "10m" }
+        { expiresIn: "1000m" }
       );
 
       res.cookie("adminAuthToken", adminAuthToken, { httpOnly: true });
@@ -75,6 +75,15 @@ class AdminContorller {
       ok: true,
       message: "Admin logged out successfully.",
     });
+  };
+  getMyProfile = async (req, res) => {
+    const admin = await AdminModel.findOne({ _id: req.adminId });
+
+    if (!admin) {
+      return res.status(400).json(responseFormat(false, "Invalid credentials"));
+    } else {
+      return res.status(200).json(responseFormat(true, "Admin found.", admin));
+    }
   };
 }
 const adminControllerObj = new AdminContorller();

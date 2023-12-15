@@ -9,7 +9,11 @@ const movieSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  imgUrl: {
+  portraitImgUrl: {
+    type: String,
+    required: true,
+  },
+  landscapeImgUrl: {
     type: String,
     required: true,
   },

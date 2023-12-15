@@ -7,9 +7,9 @@ const BookingModel = require("../models/booking.model");
 const ScreenModel = require("../models/screen.model");
 
 const { responseFormat } = require("../utilities/helpers");
-const checkAdminToken = require("../Middlewares/checkAdminToken");
 const checkAuthToken = require("../middlewares/checkAuthToken");
 const movieControllerObj = require("../controllers/movie.controller");
+const checkAdminToken = require("../middlewares/checkAdminToken");
 
 router.get("/test", async (req, res) => {
   res.json({
@@ -47,13 +47,13 @@ router.get("/screensbycity/:city", movieControllerObj.getScreenByCity);
 
 router.get(
   "/getuserbookings",
-  authTokenHandler,
+  checkAuthToken,
   movieControllerObj.getUserBookings
 );
 
 router.get(
   "/getuserbookings/:id",
-  authTokenHandler,
+  checkAuthToken,
   movieControllerObj.getUserSingleBooking
 );
 
